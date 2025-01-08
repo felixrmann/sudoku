@@ -1,0 +1,10 @@
+:host {
+  display: grid;
+  grid-template-columns: repeat(9, 3em);
+  grid-template-rows: repeat(9, 3em);
+
+  height: fit-content;
+  width: fit-content;
+
+  border: black 2px solid;
+}

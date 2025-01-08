@@ -1,0 +1,16 @@
+<nav>
+  <h1>Sudoku</h1>
+</nav>
+<div class="main-panel">
+  <div class="game-panel">
+    <field [field]="sudokuService.playingField | async"
+           (select)="sudokuService.handleFieldSelect($event)"
+    ></field>
+    <inputs [buttonConfig]="sudokuService.buttons | async"
+            (buttonClick)="sudokuService.handleButtonClick($event)"
+    ></inputs>
+  </div>
+  <div class="settings-panel">
+    <settings></settings>
+  </div>
+</div>

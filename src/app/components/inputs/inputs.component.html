@@ -1,0 +1,3 @@
+@for (button of buttonConfig; track button.value) {
+  <button (click)="handleButtonClick(button.value)" [disabled]="button.isDisabled">{{ button.label }}</button>
+}

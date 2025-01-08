@@ -1,0 +1,39 @@
+:host {
+  font-size: 1.6em;
+  border: black .5px solid;
+}
+
+.inner-border-container {
+  display: flex;
+  height: 100%;
+  width: 100%;
+
+  justify-content: center;
+  align-items: center;
+}
+
+.inner-x-border {
+  border-right: black 2px solid;
+  margin-right: 2px;
+}
+
+.inner-y-border {
+  border-bottom: black 2px solid;
+  margin-bottom: 2px;
+}
+
+.selected {
+  background-color: #d8d8e0;
+}
+
+.marked {
+  background-color: #eaeaea;
+}
+
+.wrong {
+  background-color: #d55858;
+}
+
+.user-added-value {
+  color: #062ec8;
+}

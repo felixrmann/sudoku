@@ -1,0 +1,21 @@
+:host {
+  display: flex;
+  flex-direction: column;
+}
+
+.main-panel {
+  display: flex;
+  flex-direction: row;
+}
+
+.game-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  align-items: center;
+  gap: 1em;
+}
+
+.settings-panel {
+  margin-left: 2em;
+}

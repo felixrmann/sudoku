@@ -1,0 +1,6 @@
+<div class="inner-border-container" [class.inner-x-border]="hasXBorder" [class.inner-y-border]="hasYBorder"
+     [class.selected]="isSelected" [class.marked]="isMarked" [class.user-added-value]="!isFix"
+     [class.wrong]="isWrong" (click)="handleClick(square)"
+>
+  {{ square | readableField }}
+</div>
