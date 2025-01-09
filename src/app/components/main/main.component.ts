@@ -4,10 +4,10 @@ import { acceptedInputKeyInputs, acceptedMoveKeyInputs } from '../../types/sudok
 
 @Component({
   selector: 'main-sudoku',
-  templateUrl: './main-sudoku.component.html',
-  styleUrl: './main-sudoku.component.scss'
+  templateUrl: './main.component.html',
+  styleUrl: './main.component.scss'
 })
-export class MainSudokuComponent {
+export class MainComponent {
 
   public sudokuService: SudokuService = inject(SudokuService);
 

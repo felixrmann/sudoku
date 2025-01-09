@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { SudokuService } from './services/sudoku.service';
 import { SudokuModule } from './components/sudoku.module';
-import { MainSudokuComponent } from './components/main-sudoku/main-sudoku.component';
+import { MainComponent } from './components/main/main.component';
 
 @NgModule({
   providers: [SudokuService],
   imports: [SudokuModule],
-  bootstrap: [MainSudokuComponent]
+  bootstrap: [MainComponent]
 })
 export class AppModule {
 }
