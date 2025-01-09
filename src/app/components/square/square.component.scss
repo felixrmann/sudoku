@@ -1,6 +1,6 @@
 :host {
   font-size: 1.6em;
-  border: black .5px solid;
+  border: var(--borderColor) .5px solid;
 }
 
 .inner-border-container {
@@ -13,27 +13,28 @@
 }
 
 .inner-x-border {
-  border-right: black 2px solid;
+  border-right: var(--borderColor) 2px solid;
   margin-right: 2px;
 }
 
 .inner-y-border {
-  border-bottom: black 2px solid;
+  border-bottom: var(--borderColor) 2px solid;
   margin-bottom: 2px;
 }
 
 .selected {
-  background-color: #d8d8e0;
+  background-color: var(--gameSelectedColor);
 }
 
 .marked {
-  background-color: #eaeaea;
+  background-color: var(--gameMarkedColor);
 }
 
 .wrong {
-  background-color: #d55858;
+  background-color: var(--gameErrorColor);
+  opacity: .8;
 }
 
 .user-added-value {
-  color: #062ec8;
+  color: var(--gameUserAddedValueColor);
 }

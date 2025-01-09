@@ -6,13 +6,13 @@
 
 button {
   align-items: center;
-  background-color: #fff;
-  border: 2px solid #000;
+  background-color: var(--bgColor);
+  border: 2px solid var(--borderColor);
   box-sizing: border-box;
-  color: #000;
+  color: var(--textColor);
   cursor: pointer;
   display: inline-flex;
-  fill: #000;
+  fill: var(--textColor);
   font-weight: 550;
   height: 48px;
   justify-content: center;
@@ -29,10 +29,6 @@ button {
   touch-action: manipulation;
 }
 
-button:focus {
-  color: #171e29;
-}
-
 button:hover {
   border-color: #06f;
   color: #06f;
@@ -43,10 +39,4 @@ button:active {
   border-color: #06f;
   color: #06f;
   fill: #06f;
-}
-
-@media (min-width: 768px) {
-  button {
-    min-width: 170px;
-  }
 }

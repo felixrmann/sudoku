@@ -37,7 +37,7 @@ export class SquareComponent {
 
   get isMarked(): boolean {
     if (!this.square) return false;
-    return this.square.isMarked;
+    return this.square.isMarked && !this.square.isSelected;
   }
 
   get isFix(): boolean {
@@ -47,7 +47,7 @@ export class SquareComponent {
 
   get isWrong(): boolean {
     if (!this.square) return false;
-    return this.square.isWrong;
+    return this.square.isWrong && !this.square.isSelected;
   }
 
   handleClick(square: Square | null): void {

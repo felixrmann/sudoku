@@ -1,6 +1,7 @@
 import { Component, HostListener, inject } from '@angular/core';
 import { SudokuService } from '../../services/sudoku.service';
-import { acceptedInputKeyInputs, acceptedMoveKeyInputs } from '../../types/sudoku.types';
+import { acceptedInputKeyInputs, acceptedMoveKeyInputs, SudokuSettings } from '../../types/sudoku.types';
+import { SettingsService } from '../../services/settings.service';
 
 @Component({
   selector: 'main-sudoku',
@@ -11,12 +12,26 @@ export class MainComponent {
 
   public sudokuService: SudokuService = inject(SudokuService);
 
+  private _settings: SudokuSettings | null = null;
+
+  constructor(private settingsService: SettingsService ) {
+    this.settingsService.settings.subscribe((value: SudokuSettings): void => {
+      this._settings = value;
+    });
+  }
+
   @HostListener('window:keydown', ['$event'])
   onKeyDown(event: KeyboardEvent): void {
     if (event.isTrusted &&
       acceptedMoveKeyInputs.includes(event.key) || acceptedInputKeyInputs.includes(event.key)) {
       this.sudokuService.handleKeyPress(event);
     }
+  }
+
+  get settingsTheme(): string {
+    if (!this._settings) return 'dark';
+
+    return this._settings.theme === 'dark' ? 'dark' : 'light';
   }
 
 }
