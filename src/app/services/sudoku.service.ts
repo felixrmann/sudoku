@@ -13,7 +13,7 @@ import {
   isButtonDisabled,
   isSameSquare,
   markAllFields,
-  transformToInternalSudoku,
+  transformToInternalSudoku, unmarkAllFields,
   updateSquarePos
 } from '../utils/sudoku.utils';
 import { getSudoku } from 'sudoku-gen';
@@ -88,12 +88,12 @@ export class SudokuService {
     // sets the old active square inactive if it is not the same field
     if (activeSquare && !isSameSquare(activeSquare, newActiveSquare)) {
       fieldCopy[activeSquare.y][activeSquare.x] = { ...activeSquare, isSelected: false };
-      fieldCopy = markAllFields(fieldCopy, undefined);
+      fieldCopy = unmarkAllFields(fieldCopy);
     }
 
     // sets all the same value fields to marked
     if (newActiveSquare.isFix || newActiveSquare.value !== undefined) {
-      fieldCopy = markAllFields(fieldCopy, newActiveSquare.value);
+      fieldCopy = markAllFields(fieldCopy, newActiveSquare);
     }
 
     this.activeSquare = newActiveSquare;
@@ -127,7 +127,9 @@ export class SudokuService {
         isFix: false,
         notedValues: [],
         isSelected: false,
-        isMarked: false,
+        isSameValue: false,
+        isSameRowOrColumn: false,
+        isSameBlock: false,
         isWrong: false,
       };
     }
@@ -143,7 +145,7 @@ export class SudokuService {
       ...fieldCopy[movedActiveSquare.y][movedActiveSquare.x], isSelected: true
     };
     this.activeSquare = fieldCopy[movedActiveSquare.y][movedActiveSquare.x];
-    fieldCopy = markAllFields(fieldCopy, fieldCopy[movedActiveSquare.y][movedActiveSquare.x].value);
+    fieldCopy = markAllFields(fieldCopy, fieldCopy[movedActiveSquare.y][movedActiveSquare.x]);
     this.playingField.next(fieldCopy);
   }
 
@@ -159,7 +161,7 @@ export class SudokuService {
       newField.isSelected = false;
     }
     // mark all fields of the same value
-    fieldCopy = markAllFields(fieldCopy, newField.value);
+    fieldCopy = markAllFields(fieldCopy, newField);
 
     // validation if active in settings
     if (this.sudokuSettings?.instantFeedback) {

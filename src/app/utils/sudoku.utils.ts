@@ -22,28 +22,63 @@ export function transformToInternalSudoku(sudoku: string): Square[][] {
     for (let x: number = 0; x < 9; x++) {
       const foundValue: string | undefined = sudoku.at((y * 9) + x);
       const value: number | undefined = foundValue && foundValue !== '-' ? +foundValue : undefined;
-      row[x] = { x: x, y: y, isFix: value !== undefined, value: value, notedValues: [], isSelected: false, isMarked: false, isWrong: false };
+      row[x] = {
+        x: x,
+        y: y,
+        isFix: value !== undefined,
+        value: value,
+        notedValues: [],
+        isSelected: false,
+        isSameValue: false,
+        isSameBlock: false,
+        isSameRowOrColumn: false,
+        isWrong: false
+      };
     }
     result[y] = row;
   }
   return result;
 }
 
-export function markAllFields(fields: Square[][], value: number | undefined): Square[][] {
-  const markedFields: Square[][] = [ ...fields ];
-  for (let y: number = 0; y < markedFields.length; y++) {
-    for (let x: number = 0; x < markedFields[y].length; x++) {
-      if (!value) {
-        markedFields[y][x] = { ...markedFields[y][x], isMarked: false };
-        continue;
-      }
-      if (markedFields[y][x].value === value) {
-        markedFields[y][x] = { ...markedFields[y][x], isMarked: true };
-      } else {
-        markedFields[y][x] = { ...markedFields[y][x], isMarked: false };
-      }
+export function unmarkAllFields(fields: Square[][]): Square[][] {
+  const unmarkedFields: Square[][] = [...fields];
+  for (let y = 0; y < fields.length; y++) {
+    for (let x = 0; x < fields.length; x++) {
+      unmarkedFields[y][x] = { ...unmarkedFields[y][x], isSameValue: false, isSameRowOrColumn: false, isSameBlock: false };
     }
   }
+  return unmarkedFields;
+}
+
+export function markAllFields(fields: Square[][], source: Square): Square[][] {
+  const markedFields: Square[][] = [...fields];
+
+  for (let y: number = 0; y < markedFields.length; y++) {
+    for (let x: number = 0; x < markedFields[y].length; x++) {
+      const target: Square = { ...markedFields[y][x], isSameValue: false, isSameRowOrColumn: false, isSameBlock: false };
+
+      if (source.value) {
+        // marks all fields with the same value
+        if (target.value === source.value) {
+          target.isSameValue = true;
+        }
+
+        // marks all fields in the same row and column
+        if ((target.x === source.x || target.y === source.y)) {
+          target.isSameRowOrColumn = true;
+        }
+
+        // marks all fields in the same box
+        if (Math.floor(target.y / 3) === Math.floor(source.y / 3) &&
+          Math.floor(target.x / 3) === Math.floor(source.x / 3)) {
+          target.isSameBlock = true;
+        }
+      }
+
+      markedFields[y][x] = target;
+    }
+  }
+
   return markedFields;
 }
 

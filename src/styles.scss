@@ -1,22 +1,26 @@
 /* You can add global styles to this file, and also import other style files */
-@mixin dark-mode() {
+@mixin light-mode() {
   --bgColor: #fff;
   --textColor: #000;
   --borderColor: #000;
 
   --gameSelectedColor: #6dd6f1;
-  --gameMarkedColor: #b4eeff;
+  --gameSameValueColor: #b4eeff;
+  --gameSameRowOrColumnColor: #d4f1fd;
+  --gameSameBlockColor: #d4f1fd;
   --gameErrorColor: #d55858;
   --gameUserAddedValueColor: #062ec8;
 }
 
-@mixin light-mode() {
+@mixin dark-mode() {
   --bgColor: #171e29;
   --textColor: #fff;
   --borderColor: #fff;
 
-  --gameSelectedColor: #2d5f7c;
-  --gameMarkedColor: #5d727e;
+  --gameSelectedColor: #2675dc;
+  --gameSameValueColor: #6399b6;
+  --gameSameRowOrColumnColor: #788f9f;
+  --gameSameBlockColor: #788f9f;
   --gameErrorColor: #d55858;
   --gameUserAddedValueColor: #062ec8;
 }
@@ -29,10 +33,10 @@ body {
   transition: all .3s;
 
   .light {
-    @include dark-mode();
+    @include light-mode();
   }
 
   .dark {
-    @include light-mode();
+    @include dark-mode();
   }
 }

@@ -25,7 +25,9 @@ export class SquareComponent {
     const classes: string[] = [];
 
     if (this.square.isSelected) classes.push('selected');
-    if (this.square.isMarked && !this.square.isSelected) classes.push('marked');
+    if (this.square.isSameValue && !this.square.isSelected) classes.push('mark-same-value');
+    if (this.square.isSameRowOrColumn && !this.square.isSelected) classes.push('mark-same-row-or-column');
+    if (this.square.isSameBlock && !this.square.isSelected) classes.push('mark-same-block');
     if (!this.square.isFix) classes.push('user-added-value');
     if (this.square.isWrong && !this.square.isSelected) classes.push('wrong');
 

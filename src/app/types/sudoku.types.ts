@@ -35,7 +35,9 @@ export type Square = {
   value: number | undefined;
   notedValues: number[];
   isSelected: boolean;
-  isMarked: boolean;
+  isSameValue: boolean;
+  isSameRowOrColumn: boolean;
+  isSameBlock: boolean;
   isWrong: boolean;
 }
 

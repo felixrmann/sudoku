@@ -26,8 +26,16 @@
   background-color: var(--gameSelectedColor);
 }
 
-.marked {
-  background-color: var(--gameMarkedColor);
+.mark-same-value {
+  background-color: var(--gameSameValueColor);
+}
+
+.mark-same-row-or-column {
+  background-color: var(--gameSameRowOrColumnColor);
+}
+
+.mark-same-block {
+  background-color: var(--gameSameBlockColor);
 }
 
 .wrong {
