@@ -49,8 +49,7 @@ export class SudokuService {
         const buttonResult: ButtonConfig[] = [];
         buttons.forEach((button: ButtonConfig): void => {
           if (!button.value) { // button with no value is the 'clear' button
-            const clearDisabled: boolean = !!(this.activeSquare) && this.activeSquare.value !== undefined && !(this.activeSquare.isFix);
-            buttonResult[9] = { ...buttons[9], isDisabled: !clearDisabled };
+            buttonResult[9] = { ...buttons[9], isDisabled: false };
             return;
           }
           buttonResult[button.value - 1] = {
