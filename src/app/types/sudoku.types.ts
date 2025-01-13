@@ -1,9 +1,18 @@
+import { Difficulty } from 'sudoku-gen/dist/types/difficulty.type';
+
 export const acceptedMoveKeyInputs: string[] = [
   'ArrowUp', 'ArrowDown', 'ArrowRight', 'ArrowLeft'
 ];
 
 export const acceptedInputKeyInputs: string[] = [
   '1', '2', '3', '4', '5', '6', '7', '8', '9', 'Backspace'
+];
+
+export const sudokuDifficulties: SudokuDifficulty[] = [
+  { label: 'Easy', value: 'easy' },
+  { label: 'Medium', value: 'medium' },
+  { label: 'Hard', value: 'hard' },
+  { label: 'Expert', value: 'expert' },
 ];
 
 export const buttons: ButtonConfig[] = [
@@ -39,4 +48,9 @@ export type ButtonConfig = {
 export type SudokuSettings = {
   theme: 'light' | 'dark'; // light / dark mode
   instantFeedback: boolean; // instant input error feedback
+}
+
+export type SudokuDifficulty = {
+  label: string;
+  value: Difficulty;
 }

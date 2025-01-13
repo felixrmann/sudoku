@@ -12,8 +12,10 @@
       ></inputs>
     </div>
     <div class="settings-panel">
-      <button class="settings-button" (click)="toggleSettings()">Open</button>
-      <settings id="fade-in" [class.show]="showSettings"></settings>
+      <button class="settings-button" (click)="toggleSettings()">{{ settingsButtonText }}</button>
+      <settings id="fade-in" [class.show]="showSettings"
+                (newGame)="sudokuService.initNewSudoku($event)"
+      ></settings>
     </div>
   </div>
 </div>

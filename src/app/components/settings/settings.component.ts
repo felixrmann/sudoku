@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { SettingsService } from '../../services/settings.service';
-import { SudokuSettings } from '../../types/sudoku.types';
+import { sudokuDifficulties, SudokuDifficulty, SudokuSettings } from '../../types/sudoku.types';
+import { Difficulty } from 'sudoku-gen/dist/types/difficulty.type';
 
 @Component({
   selector: 'settings',
@@ -9,12 +10,20 @@ import { SudokuSettings } from '../../types/sudoku.types';
 })
 export class SettingsComponent {
 
+  @Output()
+  public newGame: EventEmitter<Difficulty> = new EventEmitter();
+
+  public difficulties: SudokuDifficulty[] = sudokuDifficulties;
   private sudokuSettings: SudokuSettings | null = null;
 
   constructor(private settingsService: SettingsService) {
     this.settingsService.settings.subscribe((newValue: SudokuSettings): void => {
       this.sudokuSettings = newValue;
     });
+  }
+
+  handleDifficultySelection(difficulty: string): void {
+    this.newGame.emit(difficulty as Difficulty);
   }
 
   handleThemeClick(): void {
@@ -37,5 +46,4 @@ export class SettingsComponent {
     return this.sudokuSettings.instantFeedback ?
       'No instant feedback' : 'Instant feedback';
   }
-
 }

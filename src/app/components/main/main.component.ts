@@ -35,6 +35,10 @@ export class MainComponent {
     return this._settings.theme === 'dark' ? 'dark' : 'light';
   }
 
+  get settingsButtonText(): string {
+    return this._showSettings ? 'Close' : 'Open';
+  }
+
   get showSettings(): boolean {
     return this._showSettings;
   }
