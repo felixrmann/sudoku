@@ -20,7 +20,7 @@ import { getSudoku } from 'sudoku-gen';
 import { Sudoku } from 'sudoku-gen/dist/types/sudoku.type';
 import { SettingsService } from './settings.service';
 import { Difficulty } from 'sudoku-gen/dist/types/difficulty.type';
-import { removeValidationMarking, validateAllFields, validateSingleField } from '../utils/validation.utils';
+import { isGameDone, removeValidationMarking, validateAllFields, validateSingleField } from '../utils/validation.utils';
 
 @Injectable({ providedIn: 'root' })
 export class SudokuService {
@@ -169,6 +169,14 @@ export class SudokuService {
     }
 
     fieldCopy[activeSquare.y][activeSquare.x] = newField;
+
+    // check if the field is done
+    if (isGameDone(fieldCopy)) {
+      console.log('game done');
+      this.initNewSudoku('easy');
+      return;
+    }
+
     this.activeSquare = newField;
     this.playingField.next(fieldCopy);
   }

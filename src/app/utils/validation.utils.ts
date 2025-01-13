@@ -1,5 +1,14 @@
 import { Square } from '../types/sudoku.types';
 
+export function isGameDone(field: Square[][]): boolean {
+  for (let y: number = 0; y < 9; y++) {
+    for (let x: number = 0; x < 9; x ++) {
+      if (!field[y][x].value || !field[y][x].isWrong) return false;
+    }
+  }
+  return true;
+}
+
 export function validateSingleField(field: Square, sudokuSolution: Square[][]): boolean {
   return !!field.value && sudokuSolution[field.y][field.x].value !== field.value;
 }

@@ -42,8 +42,8 @@ export function transformToInternalSudoku(sudoku: string): Square[][] {
 
 export function unmarkAllFields(fields: Square[][]): Square[][] {
   const unmarkedFields: Square[][] = [...fields];
-  for (let y = 0; y < fields.length; y++) {
-    for (let x = 0; x < fields.length; x++) {
+  for (let y: number = 0; y < 9; y++) {
+    for (let x: number = 0; x < 9; x++) {
       unmarkedFields[y][x] = { ...unmarkedFields[y][x], isSameValue: false, isSameRowOrColumn: false, isSameBlock: false };
     }
   }
@@ -53,8 +53,8 @@ export function unmarkAllFields(fields: Square[][]): Square[][] {
 export function markAllFields(fields: Square[][], source: Square): Square[][] {
   const markedFields: Square[][] = [...fields];
 
-  for (let y: number = 0; y < markedFields.length; y++) {
-    for (let x: number = 0; x < markedFields[y].length; x++) {
+  for (let y: number = 0; y < 9; y++) {
+    for (let x: number = 0; x < 9; x++) {
       const target: Square = { ...markedFields[y][x], isSameValue: false, isSameRowOrColumn: false, isSameBlock: false };
 
       if (source.value) {
