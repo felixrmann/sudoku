@@ -20,6 +20,18 @@ export class SquareComponent {
   @Output()
   private select: EventEmitter<Square> = new EventEmitter();
 
+  get squareClasses(): string {
+    if (!this.square) return '';
+    const classes: string[] = [];
+
+    if (this.square.isSelected) classes.push('selected');
+    if (this.square.isMarked && !this.square.isSelected) classes.push('marked');
+    if (!this.square.isFix) classes.push('user-added-value');
+    if (this.square.isWrong && !this.square.isSelected) classes.push('wrong');
+
+    return classes.join(' ');
+  }
+
   get hasXBorder(): boolean {
     if (!this.x) return false;
     return (this.x + 1) % 3 === 0 && (this.x + 1 !== 9);
@@ -30,29 +42,9 @@ export class SquareComponent {
     return (this.y + 1) % 3 === 0 && (this.y + 1 !== 9);
   }
 
-  get isSelected(): boolean {
-    if (!this.square) return false;
-    return this.square.isSelected;
-  }
-
-  get isMarked(): boolean {
-    if (!this.square) return false;
-    return this.square.isMarked && !this.square.isSelected;
-  }
-
-  get isFix(): boolean {
-    if (!this.square) return false;
-    return this.square.isFix;
-  }
-
-  get isWrong(): boolean {
-    if (!this.square) return false;
-    return this.square.isWrong && !this.square.isSelected;
-  }
-
   handleClick(square: Square | null): void {
     if (!square) return;
-    this.select.emit({ ...square, isSelected: !square.isSelected});
+    this.select.emit({ ...square, isSelected: !square.isSelected });
   }
 
 }

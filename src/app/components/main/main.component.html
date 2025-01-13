@@ -12,7 +12,8 @@
       ></inputs>
     </div>
     <div class="settings-panel">
-      <settings></settings>
+      <button class="settings-button" (click)="toggleSettings()">Open</button>
+      <settings id="fade-in" [class.show]="showSettings"></settings>
     </div>
   </div>
 </div>
