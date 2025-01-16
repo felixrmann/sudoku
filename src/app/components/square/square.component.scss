@@ -15,12 +15,12 @@
 
 .inner-x-border {
   border-right: var(--borderColor) 2px solid;
-  margin-right: 2px;
+  width: 98%;
 }
 
 .inner-y-border {
   border-bottom: var(--borderColor) 2px solid;
-  margin-bottom: 2px;
+  height: 98%;
 }
 
 .selected {
