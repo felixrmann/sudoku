@@ -1,6 +1,7 @@
 :host {
   font-size: 1.6em;
   border: var(--borderColor) .5px solid;
+  user-select: none;
 }
 
 .inner-border-container {

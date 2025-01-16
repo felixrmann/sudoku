@@ -80,19 +80,41 @@ export class SudokuService {
   }
 
   handleFieldSelect(newActiveSquare: Square): void {
-    const activeSquare: Square | null = this.activeSquare;
+    const lastActiveSquare: Square | null = this.activeSquare;
     let fieldCopy: Square[][] = [...this.playingField.value];
     fieldCopy[newActiveSquare.y][newActiveSquare.x] = newActiveSquare;
 
-    // sets the old active square inactive if it is not the same field
-    if (activeSquare && !isSameSquare(activeSquare, newActiveSquare)) {
-      fieldCopy[activeSquare.y][activeSquare.x] = { ...activeSquare, isSelected: false };
+    // unselects last active square
+    if (lastActiveSquare) {
+      if (isSameSquare(lastActiveSquare, newActiveSquare)) {
+        fieldCopy[lastActiveSquare.y][lastActiveSquare.x] = {
+          ...lastActiveSquare,
+          isSelected: !lastActiveSquare.isSelected
+        };
+      } else {
+        fieldCopy[lastActiveSquare.y][lastActiveSquare.x] = { ...lastActiveSquare, isSelected: false };
+      }
+    }
+
+    // marks all related fields for the selected square
+    if (newActiveSquare.isFix) {
+      fieldCopy = markAllFields(fieldCopy, newActiveSquare);
+    }
+
+    // unmark all fields if square has no value
+    if (!newActiveSquare.value) {
       fieldCopy = unmarkAllFields(fieldCopy);
     }
 
-    // sets all the same value fields to marked
-    if (newActiveSquare.isFix || newActiveSquare.value !== undefined) {
-      fieldCopy = markAllFields(fieldCopy, newActiveSquare);
+    // handles the select and unselect of the same square
+    if (lastActiveSquare && isSameSquare(lastActiveSquare, newActiveSquare)) {
+      const isSelected: boolean = fieldCopy[lastActiveSquare.y][lastActiveSquare.x].isSelected;
+
+      if (isSelected) {
+        fieldCopy = markAllFields(fieldCopy, newActiveSquare);
+      } else {
+        fieldCopy = unmarkAllFields(fieldCopy);
+      }
     }
 
     this.activeSquare = newActiveSquare;
