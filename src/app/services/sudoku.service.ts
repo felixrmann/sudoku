@@ -96,25 +96,20 @@ export class SudokuService {
       }
     }
 
-    // marks all related fields for the selected square
-    if (newActiveSquare.isFix) {
-      fieldCopy = markAllFields(fieldCopy, newActiveSquare);
-    }
-
-    // unmark all fields if square has no value
-    if (!newActiveSquare.value) {
+    /**
+     * Marking logic:
+     * All fields are unmarked if:
+     * - the square has no value therefore is empty
+     * - the last active square is the same as the new one AND this field is unselected. This means the user clicked the
+     *   same square a second time, and it has to be unselected
+     *
+     * In any other case all fields with the same value as the new square are selected
+     */
+    if (!newActiveSquare.value ||
+      (lastActiveSquare && isSameSquare(lastActiveSquare, newActiveSquare) && !fieldCopy[lastActiveSquare.y][lastActiveSquare.x].isSelected)) {
       fieldCopy = unmarkAllFields(fieldCopy);
-    }
-
-    // handles the select and unselect of the same square
-    if (lastActiveSquare && isSameSquare(lastActiveSquare, newActiveSquare)) {
-      const isSelected: boolean = fieldCopy[lastActiveSquare.y][lastActiveSquare.x].isSelected;
-
-      if (isSelected) {
-        fieldCopy = markAllFields(fieldCopy, newActiveSquare);
-      } else {
-        fieldCopy = unmarkAllFields(fieldCopy);
-      }
+    } else {
+      fieldCopy = markAllFields(fieldCopy, newActiveSquare);
     }
 
     this.activeSquare = newActiveSquare;
