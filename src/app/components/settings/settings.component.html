@@ -1,7 +1,9 @@
-<select #difficultiesElement (change)="handleDifficultySelection(difficultiesElement.value)">
-  @for (difficulty of difficulties; track difficulty.value) {
-    <option value="{{difficulty.value}}">{{difficulty.label}}</option>
-  }
-</select>
-<button (click)="handleThemeClick()">{{ themeButtonText }}</button>
-<button (click)="handleFeedbackClick()">{{ instantFeedbackButtonText }}</button>
+@if (isVisible) {
+  <select #difficultiesElement (change)="handleDifficultySelection(difficultiesElement.value)">
+    @for (difficulty of difficulties; track difficulty.value) {
+      <option value="{{difficulty.value}}">{{difficulty.label}}</option>
+    }
+  </select>
+  <button (click)="handleThemeClick()">{{ themeButtonText }}</button>
+  <button (click)="handleFeedbackClick()">{{ instantFeedbackButtonText }}</button>
+}

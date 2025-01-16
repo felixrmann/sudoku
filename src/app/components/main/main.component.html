@@ -15,6 +15,7 @@
       <button class="settings-button" (click)="toggleSettings()">{{ settingsButtonText }}</button>
       <settings id="fade-in" [class.show]="showSettings"
                 (newGame)="sudokuService.initNewSudoku($event)"
+                [isVisible]="showSettings"
       ></settings>
     </div>
   </div>

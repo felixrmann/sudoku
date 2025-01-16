@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { SettingsService } from '../../services/settings.service';
 import { sudokuDifficulties, SudokuDifficulty, SudokuSettings } from '../../types/sudoku.types';
 import { Difficulty } from 'sudoku-gen/dist/types/difficulty.type';
@@ -9,6 +9,9 @@ import { Difficulty } from 'sudoku-gen/dist/types/difficulty.type';
   templateUrl: 'settings.component.html'
 })
 export class SettingsComponent {
+
+  @Input()
+  public isVisible: boolean = false;
 
   @Output()
   public newGame: EventEmitter<Difficulty> = new EventEmitter();
