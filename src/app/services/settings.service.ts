@@ -7,6 +7,9 @@ import { SudokuSettings } from '../types/sudoku.types';
 })
 export class SettingsService {
 
+  // TODO add the difficulty logic to this service
+  // TODO maby store the settings as cookies?
+
   private initialSettings: SudokuSettings = {
     theme: 'dark',
     instantFeedback: true,
