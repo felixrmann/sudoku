@@ -31,10 +31,11 @@ export class SudokuService {
   private sudokuSolution: Square[][];
   private activeSquare: Square | null = null;
   private sudokuSettings: SudokuSettings | null = null;
+  private _sudokuDifficulty: Difficulty = 'easy';
 
 
   constructor(private settingsService: SettingsService) {
-    const sudoku: Sudoku = getSudoku('easy');
+    const sudoku: Sudoku = getSudoku(this._sudokuDifficulty);
     this.playingField = new BehaviorSubject(transformToInternalSudoku(sudoku.puzzle));
     this.sudokuSolution = transformToInternalSudoku(sudoku.solution);
 
@@ -72,8 +73,13 @@ export class SudokuService {
     });
   }
 
+  get sudokuDifficulty(): Difficulty {
+    return this._sudokuDifficulty;
+  }
+
   initNewSudoku(difficulty: Difficulty): Square[][] {
-    const sudoku: Sudoku = getSudoku(difficulty);
+    this._sudokuDifficulty = difficulty;
+    const sudoku: Sudoku = getSudoku(this._sudokuDifficulty);
     this.playingField.next(transformToInternalSudoku(sudoku.puzzle));
     this.sudokuSolution = transformToInternalSudoku(sudoku.solution);
     return transformToInternalSudoku(sudoku.puzzle);

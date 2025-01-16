@@ -4,6 +4,7 @@
   </nav>
   <div class="main-panel">
     <div class="game-panel">
+      <h2 class="difficulty-text">{{difficultyText}}</h2>
       <field [field]="sudokuService.playingField | async"
              (select)="sudokuService.handleFieldSelect($event)"
       ></field>

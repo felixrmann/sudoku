@@ -1,6 +1,11 @@
 import { Component, HostListener, inject } from '@angular/core';
 import { SudokuService } from '../../services/sudoku.service';
-import { acceptedInputKeyInputs, acceptedMoveKeyInputs, SudokuSettings } from '../../types/sudoku.types';
+import {
+  acceptedInputKeyInputs,
+  acceptedMoveKeyInputs, sudokuDifficulties,
+  SudokuDifficulty,
+  SudokuSettings
+} from '../../types/sudoku.types';
 import { SettingsService } from '../../services/settings.service';
 
 @Component({
@@ -27,6 +32,13 @@ export class MainComponent {
       acceptedMoveKeyInputs.includes(event.key) || acceptedInputKeyInputs.includes(event.key)) {
       this.sudokuService.handleKeyPress(event);
     }
+  }
+
+  get difficultyText(): string {
+    const difficulty: SudokuDifficulty | undefined = sudokuDifficulties.find((e: SudokuDifficulty): boolean => {
+      return e.value === this.sudokuService.sudokuDifficulty;
+    });
+    return `Difficulty: ${difficulty?.label}`;
   }
 
   get settingsTheme(): string {
