@@ -1,3 +1,11 @@
-@for (button of buttonConfig; track button.value) {
-  <button (click)="handleButtonClick(button.value)" [disabled]="button.isDisabled">{{ button.label }}</button>
-}
+<div class="button-row">
+  @for (button of actionButtonConfig; track button.action) {
+    <button (click)="handleActionButtonClick(button)" [disabled]="button.isDisabled">{{ button.label }}</button>
+  }
+</div>
+<div class="button-row">
+  @for (button of inputButtonConfig; track button.value) {
+    <button (click)="handleInputButtonClick(button.value)" [disabled]="button.isDisabled">{{ button.label }}</button>
+  }
+</div>
+

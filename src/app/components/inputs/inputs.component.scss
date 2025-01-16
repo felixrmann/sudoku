@@ -1,7 +1,14 @@
 :host {
   display: flex;
-  flex-direction: row;
-  gap: .7em;
+  flex-direction: column;
+  gap: 1.5em;
+
+  .button-row {
+    justify-content: center;
+    display: flex;
+    flex-direction: row;
+    gap: .7em;
+  }
 }
 
 button {
@@ -17,7 +24,7 @@ button {
   justify-content: center;
   letter-spacing: -.8px;
   line-height: 24px;
-  min-width: 32px;
+  min-width: 35px;
   outline: 0;
   text-align: center;
   text-decoration: none;

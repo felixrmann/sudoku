@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { ButtonConfig } from '../../types/sudoku.types';
+import { ActionButtonConfig, InputButtonConfig } from '../../types/sudoku.types';
 
 @Component({
   selector: 'inputs',
@@ -9,13 +9,23 @@ import { ButtonConfig } from '../../types/sudoku.types';
 export class InputsComponent {
 
   @Input()
-  public buttonConfig: ButtonConfig[] | null = null;
+  public actionButtonConfig: ActionButtonConfig[] | null = null;
+
+  @Input()
+  public inputButtonConfig: InputButtonConfig[] | null = null;
 
   @Output()
-  private buttonClick: EventEmitter<number | undefined> = new EventEmitter();
+  private actionButtonClick: EventEmitter<ActionButtonConfig> = new EventEmitter();
 
-  handleButtonClick(value: number | undefined): void {
-    this.buttonClick.emit(value);
+  @Output()
+  private inputButtonClick: EventEmitter<number | undefined> = new EventEmitter();
+
+  handleActionButtonClick(button: ActionButtonConfig): void {
+    this.actionButtonClick.emit(button);
+  }
+
+  handleInputButtonClick(value: number | undefined): void {
+    this.inputButtonClick.emit(value);
   }
 
 }

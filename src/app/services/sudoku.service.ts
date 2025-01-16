@@ -3,10 +3,10 @@ import { BehaviorSubject, map, Observable, share } from 'rxjs';
 import {
   acceptedInputKeyInputs,
   acceptedMoveKeyInputs,
-  ButtonConfig,
+  InputButtonConfig,
   buttons,
   Square,
-  SudokuSettings
+  SudokuSettings, ActionButtonConfig, actionButtons
 } from '../types/sudoku.types';
 import {
   getMapValue,
@@ -26,10 +26,13 @@ import { isGameDone, removeValidationMarking, validateAllFields, validateSingleF
 export class SudokuService {
 
   public playingField: BehaviorSubject<Square[][]>;
-  public buttons: Observable<ButtonConfig[]>;
+  public actionButtons: Observable<ActionButtonConfig[]>;
+  public inputButtons: Observable<InputButtonConfig[]>;
 
   private sudokuSolution: Square[][];
   private activeSquare: Square | null = null;
+  // TODO implement move history
+  private moveHistory: Square[] = [];
   private sudokuSettings: SudokuSettings | null = null;
   private _sudokuDifficulty: Difficulty = 'easy';
 
@@ -39,20 +42,31 @@ export class SudokuService {
     this.playingField = new BehaviorSubject(transformToInternalSudoku(sudoku.puzzle));
     this.sudokuSolution = transformToInternalSudoku(sudoku.solution);
 
-    this.buttons = this.playingField.pipe(
-      map((field: Square[][]): ButtonConfig[] => {
+    this.actionButtons = this.playingField.pipe(
+      map((): ActionButtonConfig[] => {
+        return actionButtons.map((button: ActionButtonConfig): ActionButtonConfig => {
+          if (button.action === 'undo') {
+            return { ...button, isDisabled: this.moveHistory.length >= 1 };
+          }
+          if (button.action === 'clear') {
+            return { ...button, isDisabled: this.activeSquare?.value !== undefined && this.activeSquare.isFix };
+          }
+          return button;
+        });
+      }),
+      share()
+    );
+
+    this.inputButtons = this.playingField.pipe(
+      map((field: Square[][]): InputButtonConfig[] => {
         const inputs: Map<number | undefined, number> = new Map();
         field.map((innerArray: Square[]): void => { // accumulates the number of occurrences of each number
           innerArray.map((square: Square): void => {
             inputs.set(square.value, getMapValue(inputs.get(square.value)));
           });
         });
-        const buttonResult: ButtonConfig[] = [];
-        buttons.forEach((button: ButtonConfig): void => {
-          if (!button.value) { // button with no value is the 'clear' button
-            buttonResult[9] = { ...buttons[9], isDisabled: false };
-            return;
-          }
+        const buttonResult: InputButtonConfig[] = [];
+        buttons.forEach((button: InputButtonConfig): void => {
           buttonResult[button.value - 1] = {
             ...buttons[button.value - 1], isDisabled: isButtonDisabled(button.value, inputs)
           };

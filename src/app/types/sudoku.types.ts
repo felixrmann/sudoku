@@ -15,7 +15,15 @@ export const sudokuDifficulties: SudokuDifficulty[] = [
   { label: 'Expert', value: 'expert' },
 ];
 
-export const buttons: ButtonConfig[] = [
+export const actionButtons: ActionButtonConfig[] = [
+  { label: 'Undo', action: 'undo', isDisabled: false, isActive: false },
+  { label: 'Clear', action: 'clear', isDisabled: false, isActive: false },
+  { label: 'Note', action: 'note', isDisabled: false, isActive: false },
+  { label: 'Hint', action: 'hint', isDisabled: false, isActive: false },
+  { label: 'Solve', action: 'solve', isDisabled: false, isActive: false },
+]
+
+export const buttons: InputButtonConfig[] = [
   { label: '1', value: 1, isDisabled: false },
   { label: '2', value: 2, isDisabled: false },
   { label: '3', value: 3, isDisabled: false },
@@ -24,8 +32,7 @@ export const buttons: ButtonConfig[] = [
   { label: '6', value: 6, isDisabled: false },
   { label: '7', value: 7, isDisabled: false },
   { label: '8', value: 8, isDisabled: false },
-  { label: '9', value: 9, isDisabled: false },
-  { label: 'Clear', value: undefined, isDisabled: false }
+  { label: '9', value: 9, isDisabled: false }
 ];
 
 export type Square = {
@@ -41,10 +48,18 @@ export type Square = {
   isWrong: boolean;
 }
 
-export type ButtonConfig = {
+type ButtonConfig = {
   label: string;
-  value: number | undefined;
   isDisabled: boolean;
+}
+
+export type InputButtonConfig = ButtonConfig & {
+  value: number;
+}
+
+export type ActionButtonConfig = ButtonConfig & {
+  action: 'undo' | 'clear' | 'note' | 'hint' | 'solve';
+  isActive: boolean;
 }
 
 export type SudokuSettings = {

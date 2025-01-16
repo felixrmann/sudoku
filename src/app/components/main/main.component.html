@@ -4,12 +4,13 @@
   </nav>
   <div class="main-panel">
     <div class="game-panel">
-      <h2 class="difficulty-text">{{difficultyText}}</h2>
+      <h2 class="difficulty-text">{{ difficultyText }}</h2>
       <field [field]="sudokuService.playingField | async"
              (select)="sudokuService.handleFieldSelect($event)"
       ></field>
-      <inputs [buttonConfig]="sudokuService.buttons | async"
-              (buttonClick)="sudokuService.handleButtonClick($event)"
+      <inputs [actionButtonConfig]="sudokuService.actionButtons | async"
+              [inputButtonConfig]="sudokuService.inputButtons | async"
+              (inputButtonClick)="sudokuService.handleButtonClick($event)"
       ></inputs>
     </div>
     <div class="settings-panel">
