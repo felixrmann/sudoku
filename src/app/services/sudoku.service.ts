@@ -31,7 +31,6 @@ export class SudokuService {
 
   private sudokuSolution: Square[][];
   private activeSquare: Square | null = null;
-  // TODO implement move history
   private moveHistory: Square[] = [];
   private sudokuSettings: SudokuSettings | null = null;
   private _sudokuDifficulty: Difficulty = 'easy';
@@ -94,12 +93,14 @@ export class SudokuService {
     return this._sudokuDifficulty;
   }
 
-  initNewSudoku(difficulty: Difficulty): Square[][] {
+  initNewSudoku(difficulty: Difficulty): void {
     this._sudokuDifficulty = difficulty;
+    this.moveHistory = [];
+    this.activeSquare = null;
+
     const sudoku: Sudoku = getSudoku(this._sudokuDifficulty);
-    this.renderField(transformToInternalSudoku(sudoku.puzzle));
     this.sudokuSolution = transformToInternalSudoku(sudoku.solution);
-    return transformToInternalSudoku(sudoku.puzzle);
+    this.renderField(transformToInternalSudoku(sudoku.puzzle));
   }
 
   handleFieldSelect(newActiveSquare: Square): void {
@@ -162,8 +163,24 @@ export class SudokuService {
   }
 
   private handleUndo(): void {
-    // TODO
-    console.log('toto: implement undo');
+    if (this.moveHistory.length < 1) return;
+
+    const lastMove: Square | undefined = this.moveHistory.pop();
+    if (!lastMove) return;
+
+    let fieldCopy: Square[][] = [...this.playingField.value];
+    const lastActiveSquare: Square | null = this.activeSquare;
+    if (lastActiveSquare) {
+      fieldCopy[lastActiveSquare.y][lastActiveSquare.x] = { ...lastActiveSquare, isSelected: false };
+    }
+
+    const squareCopy: Square = fieldCopy[lastMove.y][lastMove.x];
+    squareCopy.value = undefined;
+    squareCopy.isSelected = false;
+    fieldCopy[lastMove.y][lastMove.x] = { ...squareCopy };
+    fieldCopy = unmarkAllFields(fieldCopy);
+    this.activeSquare = squareCopy;
+    this.renderField(fieldCopy);
   }
 
   private handleClear(): void {
@@ -249,6 +266,7 @@ export class SudokuService {
     }
 
     fieldCopy[activeSquare.y][activeSquare.x] = newField;
+    this.moveHistory.push(newField);
 
     // check if the field is done
     if (isGameDone(fieldCopy)) {
