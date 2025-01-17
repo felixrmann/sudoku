@@ -10,7 +10,8 @@
       ></field>
       <inputs [actionButtonConfig]="sudokuService.actionButtons | async"
               [inputButtonConfig]="sudokuService.inputButtons | async"
-              (inputButtonClick)="sudokuService.handleButtonClick($event)"
+              (actionButtonClick)="sudokuService.handleActionButtonClick($event)"
+              (inputButtonClick)="sudokuService.handleInputButtonClick($event)"
       ></inputs>
     </div>
     <div class="settings-panel">

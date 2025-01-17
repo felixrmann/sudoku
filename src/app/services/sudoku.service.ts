@@ -46,10 +46,13 @@ export class SudokuService {
       map((): ActionButtonConfig[] => {
         return actionButtons.map((button: ActionButtonConfig): ActionButtonConfig => {
           if (button.action === 'undo') {
-            return { ...button, isDisabled: this.moveHistory.length >= 1 };
+            return { ...button, isDisabled: this.moveHistory.length < 1 };
           }
           if (button.action === 'clear') {
-            return { ...button, isDisabled: this.activeSquare?.value !== undefined && this.activeSquare.isFix };
+            if (!this.activeSquare || this.activeSquare.isFix || this.activeSquare.value === undefined) {
+              return { ...button, isDisabled: true };
+            }
+            return { ...button, isDisabled: false };
           }
           return button;
         });
@@ -80,9 +83,9 @@ export class SudokuService {
       this.sudokuSettings = newValue;
 
       if (newValue.instantFeedback) {
-        this.playingField.next(validateAllFields(this.playingField.value, this.sudokuSolution));
+        this.renderField(validateAllFields(this.playingField.value, this.sudokuSolution));
       } else {
-        this.playingField.next(removeValidationMarking(this.playingField.value));
+        this.renderField(removeValidationMarking(this.playingField.value));
       }
     });
   }
@@ -94,7 +97,7 @@ export class SudokuService {
   initNewSudoku(difficulty: Difficulty): Square[][] {
     this._sudokuDifficulty = difficulty;
     const sudoku: Sudoku = getSudoku(this._sudokuDifficulty);
-    this.playingField.next(transformToInternalSudoku(sudoku.puzzle));
+    this.renderField(transformToInternalSudoku(sudoku.puzzle));
     this.sudokuSolution = transformToInternalSudoku(sudoku.solution);
     return transformToInternalSudoku(sudoku.puzzle);
   }
@@ -133,10 +136,20 @@ export class SudokuService {
     }
 
     this.activeSquare = newActiveSquare;
-    this.playingField.next(fieldCopy);
+    this.renderField(fieldCopy);
   }
 
-  handleButtonClick(value: number | undefined): void {
+  handleActionButtonClick(button: ActionButtonConfig): void {
+    switch (button.action) {
+      case 'undo': return this.handleUndo();
+      case 'clear': return this.handleClear();
+      case 'note': return this.handleNote();
+      case 'hint': return this.handleHint();
+      case 'solve': return this.handleSolve();
+    }
+  }
+
+  handleInputButtonClick(value: number | undefined): void {
     this.setNewField(value);
   }
 
@@ -146,6 +159,37 @@ export class SudokuService {
     } else if (acceptedInputKeyInputs.includes(event.key)) {
       this.setNewField(event.key === 'Backspace' ? undefined : +event.key);
     }
+  }
+
+  private handleUndo(): void {
+    // TODO
+    console.log('toto: implement undo');
+  }
+
+  private handleClear(): void {
+    if (!this.activeSquare) return;
+
+    const fieldCopy: Square[][] = [...this.playingField.value];
+    const squareCopy: Square = fieldCopy[this.activeSquare.y][this.activeSquare.x];
+    squareCopy.value = undefined;
+    fieldCopy[this.activeSquare.y][this.activeSquare.x] = { ...squareCopy };
+    this.activeSquare = squareCopy;
+    this.renderField(fieldCopy);
+  }
+
+  private handleNote(): void {
+    // TODO
+    console.log('toto: implement note');
+  }
+
+  private handleHint(): void {
+    // TODO
+    console.log('toto: implement hint');
+  }
+
+  private handleSolve(): void {
+    // TODO
+    console.log('toto: implement solve');
   }
 
   private handleMoveKeyPress(event: KeyboardEvent): void {
@@ -182,7 +226,7 @@ export class SudokuService {
     };
     this.activeSquare = fieldCopy[movedActiveSquare.y][movedActiveSquare.x];
     fieldCopy = markAllFields(fieldCopy, fieldCopy[movedActiveSquare.y][movedActiveSquare.x]);
-    this.playingField.next(fieldCopy);
+    this.renderField(fieldCopy);
   }
 
   private setNewField(value: number | undefined): void {
@@ -214,7 +258,11 @@ export class SudokuService {
     }
 
     this.activeSquare = newField;
-    this.playingField.next(fieldCopy);
+    this.renderField(fieldCopy);
+  }
+
+  private renderField(newField: Square[][]): void {
+    this.playingField.next(newField);
   }
 
 }
