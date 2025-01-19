@@ -29,25 +29,28 @@ export class SudokuService {
   public actionButtons: Observable<ActionButtonConfig[]>;
   public inputButtons: Observable<InputButtonConfig[]>;
 
+  private _initialField: Square[][];
   private sudokuSolution: Square[][];
   private activeSquare: Square | null = null;
-  private moveHistory: Square[] = [];
+  private _moveHistory: Square[] = [];
 
   private isNotesActive: boolean = false;
   private sudokuSettings: SudokuSettings | null = null;
   private _sudokuDifficulty: Difficulty = 'easy';
+  private _gameIsDone: boolean = false;
 
 
   constructor(private settingsService: SettingsService) {
     const sudoku: Sudoku = getSudoku(this._sudokuDifficulty);
-    this.playingField = new BehaviorSubject(transformToInternalSudoku(sudoku.puzzle));
+    this._initialField = transformToInternalSudoku(sudoku.puzzle);
     this.sudokuSolution = transformToInternalSudoku(sudoku.solution);
+    this.playingField = new BehaviorSubject(transformToInternalSudoku(sudoku.puzzle));
 
     this.actionButtons = this.playingField.pipe(
       map((): ActionButtonConfig[] => {
         return actionButtons.map((button: ActionButtonConfig): ActionButtonConfig => {
           if (button.action === 'undo') {
-            return { ...button, isDisabled: this.moveHistory.length < 1 };
+            return { ...button, isDisabled: this._moveHistory.length < 1 };
           }
           if (button.action === 'clear') {
             if (!this.activeSquare || this.activeSquare.isFix ||
@@ -99,12 +102,29 @@ export class SudokuService {
     return this._sudokuDifficulty;
   }
 
+  get gameIsDone(): boolean {
+    return this._gameIsDone;
+  }
+
+  set gameIsDone(newValue: boolean) {
+    this._gameIsDone = newValue;
+  }
+
+  get initialField(): Square[][] {
+    return this._initialField;
+  }
+
+  get moveHistory(): Square[] {
+    return this._moveHistory
+  }
+
   initNewSudoku(difficulty: Difficulty): void {
     this._sudokuDifficulty = difficulty;
-    this.moveHistory = [];
+    this._moveHistory = [];
     this.activeSquare = null;
 
     const sudoku: Sudoku = getSudoku(this._sudokuDifficulty);
+    this._initialField = transformToInternalSudoku(sudoku.puzzle);
     this.sudokuSolution = transformToInternalSudoku(sudoku.solution);
     this.renderField(transformToInternalSudoku(sudoku.puzzle));
   }
@@ -182,9 +202,9 @@ export class SudokuService {
   }
 
   private handleUndo(): void {
-    if (this.moveHistory.length < 1) return;
+    if (this._moveHistory.length < 1) return;
 
-    const lastMove: Square | undefined = this.moveHistory.pop();
+    const lastMove: Square | undefined = this._moveHistory.pop();
     if (!lastMove) return;
 
     let fieldCopy: Square[][] = [...this.playingField.value];
@@ -315,17 +335,18 @@ export class SudokuService {
     }
 
     fieldCopy[activeSquare.y][activeSquare.x] = newField;
-    this.moveHistory.push(newField);
+    this._moveHistory.push(newField);
+
+    this.activeSquare = newField;
+    this.renderField(fieldCopy);
 
     // check if the field is done
     if (isGameDone(fieldCopy)) {
       console.log('game done');
-      this.initNewSudoku('easy');
+      this.gameIsDone = true;
+      //this.initNewSudoku('easy');
       return;
     }
-
-    this.activeSquare = newField;
-    this.renderField(fieldCopy);
   }
 
   private renderField(newField: Square[][]): void {

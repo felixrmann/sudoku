@@ -1,0 +1,10 @@
+<dialog #dialogElement>
+  <h3>You successfully completed a field</h3>
+  <field [field]="replayService?.replayedGame | async"></field>
+
+  <div class="dialog-button-container">
+    <button>Close</button>
+    Difficulty
+    <button>New Game</button>
+  </div>
+</dialog>

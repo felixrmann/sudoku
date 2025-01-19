@@ -6,6 +6,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { InputsComponent } from './inputs/inputs.component';
 import { FieldPipe } from '../services/field.pipe';
 import { SettingsComponent } from './settings/settings.component';
+import { ReplayComponent } from './replay/replay.component';
 
 const components = [
   FieldComponent,
@@ -13,7 +14,8 @@ const components = [
   SquareComponent,
   MainComponent,
   InputsComponent,
-  SettingsComponent
+  SettingsComponent,
+  ReplayComponent
 ];
 
 @NgModule({

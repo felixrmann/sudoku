@@ -3,7 +3,7 @@ import { Square } from '../types/sudoku.types';
 export function isGameDone(field: Square[][]): boolean {
   for (let y: number = 0; y < 9; y++) {
     for (let x: number = 0; x < 9; x ++) {
-      if (!field[y][x].value || !field[y][x].isWrong) return false;
+      if (!field[y][x].value || field[y][x].isWrong) return false;
     }
   }
   return true;

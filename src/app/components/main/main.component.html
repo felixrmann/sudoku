@@ -1,4 +1,5 @@
 <div id="sudoku-main-component" [ngClass]="settingsTheme">
+  <replay [isOpen]="sudokuService.gameIsDone" [initialField]="sudokuService.initialField" [moveHistory]="sudokuService.moveHistory"></replay>
   <nav>
     <h1>Sudoku</h1>
   </nav>

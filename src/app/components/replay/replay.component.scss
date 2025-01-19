@@ -1,0 +1,17 @@
+:host {
+  dialog {
+    user-select: none;
+
+    background-color: var(--bgColor);
+    color: var(--textColor);
+
+    &::backdrop {
+      background-color: var(--bgColor);
+      opacity: .9;
+    }
+
+    .dialog-button-container {
+      margin-top: 1em;
+    }
+  }
+}
