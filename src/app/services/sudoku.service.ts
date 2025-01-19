@@ -32,6 +32,8 @@ export class SudokuService {
   private sudokuSolution: Square[][];
   private activeSquare: Square | null = null;
   private moveHistory: Square[] = [];
+
+  private isNotesActive: boolean = false;
   private sudokuSettings: SudokuSettings | null = null;
   private _sudokuDifficulty: Difficulty = 'easy';
 
@@ -48,10 +50,14 @@ export class SudokuService {
             return { ...button, isDisabled: this.moveHistory.length < 1 };
           }
           if (button.action === 'clear') {
-            if (!this.activeSquare || this.activeSquare.isFix || this.activeSquare.value === undefined) {
+            if (!this.activeSquare || this.activeSquare.isFix ||
+              (this.activeSquare.value === undefined && this.activeSquare.notedValues.length === 0)) {
               return { ...button, isDisabled: true };
             }
             return { ...button, isDisabled: false };
+          }
+          if (button.action === 'note') {
+            return { ...button, isActive: this.isNotesActive };
           }
           return button;
         });
@@ -142,23 +148,36 @@ export class SudokuService {
 
   handleActionButtonClick(button: ActionButtonConfig): void {
     switch (button.action) {
-      case 'undo': return this.handleUndo();
-      case 'clear': return this.handleClear();
-      case 'note': return this.handleNote();
-      case 'hint': return this.handleHint();
-      case 'solve': return this.handleSolve();
+      case 'undo':
+        return this.handleUndo();
+      case 'clear':
+        return this.handleClear();
+      case 'note':
+        return this.handleNote();
+      case 'hint':
+        return this.handleHint();
+      case 'solve':
+        return this.handleSolve();
     }
   }
 
-  handleInputButtonClick(value: number | undefined): void {
-    this.setNewField(value);
+  handleInputButtonClick(value: number): void {
+    if (this.isNotesActive) {
+      this.setNewNote(value);
+    } else {
+      this.setNewField(value);
+    }
   }
 
   handleKeyPress(event: KeyboardEvent): void {
     if (acceptedMoveKeyInputs.includes(event.key)) {
       this.handleMoveKeyPress(event);
     } else if (acceptedInputKeyInputs.includes(event.key)) {
-      this.setNewField(event.key === 'Backspace' ? undefined : +event.key);
+      if (this.isNotesActive) {
+        this.setNewNote(event.key === 'Backspace' ? undefined : +event.key);
+      } else {
+        this.setNewField(event.key === 'Backspace' ? undefined : +event.key);
+      }
     }
   }
 
@@ -188,15 +207,21 @@ export class SudokuService {
 
     const fieldCopy: Square[][] = [...this.playingField.value];
     const squareCopy: Square = fieldCopy[this.activeSquare.y][this.activeSquare.x];
-    squareCopy.value = undefined;
+
+    // if field already has no value the notes are cleared
+    if (!squareCopy.value) {
+      squareCopy.notedValues = [];
+    } else {
+      squareCopy.value = undefined;
+    }
     fieldCopy[this.activeSquare.y][this.activeSquare.x] = { ...squareCopy };
     this.activeSquare = squareCopy;
     this.renderField(fieldCopy);
   }
 
   private handleNote(): void {
-    // TODO
-    console.log('toto: implement note');
+    this.isNotesActive = !this.isNotesActive;
+    this.renderField(this.playingField.value);
   }
 
   private handleHint(): void {
@@ -243,6 +268,30 @@ export class SudokuService {
     };
     this.activeSquare = fieldCopy[movedActiveSquare.y][movedActiveSquare.x];
     fieldCopy = markAllFields(fieldCopy, fieldCopy[movedActiveSquare.y][movedActiveSquare.x]);
+    this.renderField(fieldCopy);
+  }
+
+  private setNewNote(value: number | undefined): void {
+    const activeSquare: Square | null = this.activeSquare;
+    if (!activeSquare || activeSquare.isFix) return;
+
+    // clear the notes when value is undefined
+    if (!value) {
+      activeSquare.notedValues = [];
+    } else {
+      //if value already exists in the notes it is removed
+      if (activeSquare.notedValues.includes(value)) {
+        activeSquare.notedValues = activeSquare.notedValues.filter((element: number): boolean => {
+          return element !== value;
+        });
+      } else {
+        activeSquare.notedValues.push(value);
+      }
+    }
+
+    const fieldCopy: Square[][] = [...this.playingField.value];
+    fieldCopy[activeSquare.y][activeSquare.x] = { ...activeSquare };
+    this.activeSquare = activeSquare;
     this.renderField(fieldCopy);
   }
 

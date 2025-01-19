@@ -9,12 +9,6 @@ import { Square } from '../../types/sudoku.types';
 export class SquareComponent {
 
   @Input()
-  public y: number | null = null;
-
-  @Input()
-  public x: number | null = null;
-
-  @Input()
   public square: Square | null = null;
 
   @Output()
@@ -31,22 +25,32 @@ export class SquareComponent {
     if (!this.square.isFix) classes.push('user-added-value');
     if (this.square.isWrong && !this.square.isSelected) classes.push('wrong');
 
+    if ((this.square.x + 1) % 3 === 0 && (this.square.x + 1 !== 9)) classes.push('inner-x-border');
+    if ((this.square.y + 1) % 3 === 0 && (this.square.y + 1 !== 9)) classes.push('inner-y-border');
+
     return classes.join(' ');
   }
 
-  get hasXBorder(): boolean {
-    if (!this.x) return false;
-    return (this.x + 1) % 3 === 0 && (this.x + 1 !== 9);
+  get showSquareValue(): boolean {
+    return this.square === null || this.square.value !== undefined;
   }
 
-  get hasYBorder(): boolean {
-    if (!this.y) return false;
-    return (this.y + 1) % 3 === 0 && (this.y + 1 !== 9);
+  get notes(): string[] {
+    if (!this.square) return [];
+    return this.convertNotes(this.square.notedValues);
   }
 
   handleClick(square: Square | null): void {
     if (!square) return;
     this.select.emit({ ...square, isSelected: !square.isSelected });
+  }
+
+  private convertNotes(rawNotes: number[]): string[] {
+    const result: string[] = [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '];
+    for (const note of rawNotes) {
+      result[note - 1] = `${note}`;
+    }
+    return result;
   }
 
 }

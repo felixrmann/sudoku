@@ -18,13 +18,13 @@ export class InputsComponent {
   private actionButtonClick: EventEmitter<ActionButtonConfig> = new EventEmitter();
 
   @Output()
-  private inputButtonClick: EventEmitter<number | undefined> = new EventEmitter();
+  private inputButtonClick: EventEmitter<number> = new EventEmitter();
 
   handleActionButtonClick(button: ActionButtonConfig): void {
     this.actionButtonClick.emit(button);
   }
 
-  handleInputButtonClick(value: number | undefined): void {
+  handleInputButtonClick(value: number): void {
     this.inputButtonClick.emit(value);
   }
 

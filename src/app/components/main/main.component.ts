@@ -48,7 +48,7 @@ export class MainComponent {
   }
 
   get settingsButtonText(): string {
-    return this._showSettings ? 'Close' : 'Open';
+    return this._showSettings ? 'Close' : 'Settings';
   }
 
   get showSettings(): boolean {

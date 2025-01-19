@@ -1,4 +1,11 @@
-<div class="inner-border-container" [class.inner-x-border]="hasXBorder" [class.inner-y-border]="hasYBorder"
-     [ngClass]="squareClasses" (click)="handleClick(square)">
-  {{ square | readableField }}
+<div class="inner-border-container" [ngClass]="squareClasses" (click)="handleClick(square)">
+  @if (showSquareValue) {
+    {{ square | readableField }}
+  } @else {
+    <div class="notes-container">
+      @for (note of notes; track $index) {
+        <div class="element">{{ note }}</div>
+      }
+    </div>
+  }
 </div>

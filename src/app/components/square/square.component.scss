@@ -23,6 +23,21 @@
   height: 98%;
 }
 
+.notes-container {
+  display: grid;
+  column-gap: 5px;
+  grid-template-columns: repeat(3, 1fr);
+
+  .element {
+    display: flex;
+    width: 11px;
+    height: 15px;
+
+    font-size: small;
+    justify-content: center;
+  }
+}
+
 .selected {
   background-color: var(--gameSelectedColor);
 }

@@ -1,6 +1,9 @@
 <div class="button-row">
   @for (button of actionButtonConfig; track button.action) {
-    <button (click)="handleActionButtonClick(button)" [disabled]="button.isDisabled">{{ button.label }}</button>
+    <button (click)="handleActionButtonClick(button)" [disabled]="button.isDisabled"
+            [class.isActive]="button.isActive">
+      {{ button.label }}
+    </button>
   }
 </div>
 <div class="button-row">

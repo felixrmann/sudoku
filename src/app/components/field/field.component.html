@@ -1,7 +1,5 @@
-@for (yRow of field; track yRow; let yIdx = $index) {
-  @for (square of yRow; track square.x; let xIdx = $index) {
-    <square [y]="yIdx" [x]="xIdx" [square]="square"
-            (select)="handleSelect($event)"
-    ></square>
+@for (yRow of field; track yRow) {
+  @for (square of yRow; track square.x) {
+    <square [square]="square" (select)="handleSelect($event)"></square>
   }
 }
