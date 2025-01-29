@@ -3,8 +3,17 @@
   <field [field]="replayService?.replayedGame | async"></field>
 
   <div class="dialog-button-container">
-    <button>Close</button>
-    Difficulty
-    <button>New Game</button>
+    <div>
+      <button (click)="handleCloseClick()">Close</button>
+    </div>
+
+    <div>
+      <select #difficultiesElement (change)="handleDifficultySelection(difficultiesElement.value)">
+        @for (difficulty of difficulties; track difficulty.value) {
+          <option value="{{difficulty.value}}">{{difficulty.label}}</option>
+        }
+      </select>
+      <button (click)="handleNewGameClick()">New Game</button>
+    </div>
   </div>
 </dialog>

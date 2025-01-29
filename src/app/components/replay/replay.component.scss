@@ -12,6 +12,15 @@
 
     .dialog-button-container {
       margin-top: 1em;
+
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+
+      div {
+        display: flex;
+        gap: 1em;
+      }
     }
   }
 }

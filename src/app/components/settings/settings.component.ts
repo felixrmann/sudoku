@@ -16,7 +16,7 @@ export class SettingsComponent {
   @Output()
   public newGame: EventEmitter<Difficulty> = new EventEmitter();
 
-  public difficulties: SudokuDifficulty[] = sudokuDifficulties;
+  public readonly difficulties: SudokuDifficulty[] = sudokuDifficulties;
   private sudokuSettings: SudokuSettings | null = null;
 
   constructor(private settingsService: SettingsService) {

@@ -7,7 +7,7 @@ export function getMapValue(current: number | undefined): number {
 
 export function isButtonDisabled(buttonValue: number | undefined, inputs: Map<number | undefined, number>): boolean {
   const buttonAmount: number | undefined = inputs.get(buttonValue);
-  if (!buttonAmount) return true;
+  if (!buttonAmount) return false;
   return buttonAmount === 9;
 }
 

@@ -1,6 +1,16 @@
-import { ChangeDetectionStrategy, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef, EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+  ViewChild
+} from '@angular/core';
 import { ReplayService } from '../../services/replay.service';
-import { Square } from '../../types/sudoku.types';
+import { Square, sudokuDifficulties, SudokuDifficulty } from '../../types/sudoku.types';
+import { Difficulty } from 'sudoku-gen/dist/types/difficulty.type';
 
 @Component({
   selector: 'replay',
@@ -25,7 +35,12 @@ export class ReplayComponent implements OnInit, OnDestroy {
   @Input()
   public moveHistory: Square[] = [];
 
+  @Output()
+  public newGame: EventEmitter<Difficulty> = new EventEmitter();
+
   public replayService: ReplayService | null = null;
+  public readonly difficulties: SudokuDifficulty[] = sudokuDifficulties;
+  private selectedDifficulty: Difficulty = 'easy';
 
   ngOnInit(): void {
     this.handleVisibility();
@@ -34,6 +49,21 @@ export class ReplayComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.handleVisibility(false);
+    this.newGame.emit('easy');
+  }
+
+  handleCloseClick(): void {
+    this.handleVisibility(false);
+    this.newGame.emit('easy');
+  }
+
+  handleDifficultySelection(difficulty: string): void {
+    this.selectedDifficulty = difficulty as Difficulty;
+  }
+
+  handleNewGameClick(): void {
+    this.handleVisibility(false);
+    this.newGame.emit(this.selectedDifficulty);
   }
 
   private handleVisibility(isOpen?: boolean): void {
@@ -44,5 +74,4 @@ export class ReplayComponent implements OnInit, OnDestroy {
       this.dialog.nativeElement.close();
     }
   }
-
 }
