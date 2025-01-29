@@ -268,6 +268,7 @@ export class SudokuService {
         y: 0,
         isFix: false,
         notedValues: [],
+        highlightedNote: undefined,
         isSelected: false,
         isSameValue: false,
         isSameRowOrColumn: false,
@@ -342,10 +343,7 @@ export class SudokuService {
 
     // check if the field is done
     if (isGameDone(fieldCopy)) {
-      console.log('game done');
       this.gameIsDone = true;
-      //this.initNewSudoku('easy');
-      return;
     }
   }
 

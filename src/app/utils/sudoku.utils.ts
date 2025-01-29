@@ -20,7 +20,7 @@ export function transformToInternalSudoku(sudoku: string): Square[][] {
   for (let y: number = 0; y < 9; y++) {
     const row: Square[] = [];
     for (let x: number = 0; x < 9; x++) {
-      const foundValue: string | undefined = sudoku.at((y * 9) + x);
+      const foundValue: string | undefined = sudoku.at(( y * 9 ) + x);
       const value: number | undefined = foundValue && foundValue !== '-' ? +foundValue : undefined;
       row[x] = {
         x: x,
@@ -28,6 +28,7 @@ export function transformToInternalSudoku(sudoku: string): Square[][] {
         isFix: value !== undefined,
         value: value,
         notedValues: [],
+        highlightedNote: undefined,
         isSelected: false,
         isSameValue: false,
         isSameBlock: false,
@@ -44,7 +45,13 @@ export function unmarkAllFields(fields: Square[][]): Square[][] {
   const unmarkedFields: Square[][] = [...fields];
   for (let y: number = 0; y < 9; y++) {
     for (let x: number = 0; x < 9; x++) {
-      unmarkedFields[y][x] = { ...unmarkedFields[y][x], isSameValue: false, isSameRowOrColumn: false, isSameBlock: false };
+      unmarkedFields[y][x] = {
+        ...unmarkedFields[y][x],
+        highlightedNote: undefined,
+        isSameValue: false,
+        isSameRowOrColumn: false,
+        isSameBlock: false
+      };
     }
   }
   return unmarkedFields;
@@ -55,7 +62,12 @@ export function markAllFields(fields: Square[][], source: Square): Square[][] {
 
   for (let y: number = 0; y < 9; y++) {
     for (let x: number = 0; x < 9; x++) {
-      const target: Square = { ...markedFields[y][x], isSameValue: false, isSameRowOrColumn: false, isSameBlock: false };
+      const target: Square = {
+        ...markedFields[y][x],
+        isSameValue: false,
+        isSameRowOrColumn: false,
+        isSameBlock: false
+      };
 
       if (source.value) {
         // marks all fields with the same value
@@ -64,7 +76,7 @@ export function markAllFields(fields: Square[][], source: Square): Square[][] {
         }
 
         // marks all fields in the same row and column
-        if ((target.x === source.x || target.y === source.y)) {
+        if (( target.x === source.x || target.y === source.y )) {
           target.isSameRowOrColumn = true;
         }
 
@@ -73,6 +85,9 @@ export function markAllFields(fields: Square[][], source: Square): Square[][] {
           Math.floor(target.x / 3) === Math.floor(source.x / 3)) {
           target.isSameBlock = true;
         }
+
+        // highlights the notes of a square
+        target.highlightedNote = source.value;
       }
 
       markedFields[y][x] = target;

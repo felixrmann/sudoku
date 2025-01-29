@@ -36,6 +36,10 @@
     font-size: small;
     justify-content: center;
   }
+
+  .highlighted {
+    color: var(--gameSelectedNoteColor);
+  }
 }
 
 .selected {

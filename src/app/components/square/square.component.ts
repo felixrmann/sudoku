@@ -25,14 +25,10 @@ export class SquareComponent {
     if (!this.square.isFix) classes.push('user-added-value');
     if (this.square.isWrong && !this.square.isSelected) classes.push('wrong');
 
-    if ((this.square.x + 1) % 3 === 0 && (this.square.x + 1 !== 9)) classes.push('inner-x-border');
-    if ((this.square.y + 1) % 3 === 0 && (this.square.y + 1 !== 9)) classes.push('inner-y-border');
+    if (( this.square.x + 1 ) % 3 === 0 && ( this.square.x + 1 !== 9 )) classes.push('inner-x-border');
+    if (( this.square.y + 1 ) % 3 === 0 && ( this.square.y + 1 !== 9 )) classes.push('inner-y-border');
 
     return classes.join(' ');
-  }
-
-  get showSquareValue(): boolean {
-    return this.square === null || this.square.value !== undefined;
   }
 
   get notes(): string[] {
@@ -40,15 +36,24 @@ export class SquareComponent {
     return this.convertNotes(this.square.notedValues);
   }
 
+  get showSquareValue(): boolean {
+    return this.square === null || this.square.value !== undefined;
+  }
+
   handleClick(square: Square | null): void {
     if (!square) return;
     this.select.emit({ ...square, isSelected: !square.isSelected });
   }
 
+  isNoteHighlighted(note: string): boolean {
+    if (!this.square) return false;
+    return !!( this.square.highlightedNote ) && this.square.highlightedNote === +note && this.square.notedValues.includes(+note);
+  }
+
   private convertNotes(rawNotes: number[]): string[] {
     const result: string[] = [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '];
     for (const note of rawNotes) {
-      result[note - 1] = `${note}`;
+      result[note - 1] = `${ note }`;
     }
     return result;
   }

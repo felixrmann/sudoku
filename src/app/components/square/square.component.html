@@ -4,7 +4,7 @@
   } @else {
     <div class="notes-container">
       @for (note of notes; track $index) {
-        <div class="element">{{ note }}</div>
+        <div class="element" [ngClass]="{ 'highlighted': isNoteHighlighted(note) }">{{ note }}</div>
       }
     </div>
   }

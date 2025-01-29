@@ -41,6 +41,7 @@ export type Square = {
   isFix: boolean;
   value: number | undefined;
   notedValues: number[];
+  highlightedNote: number | undefined;
   isSelected: boolean;
   isSameValue: boolean;
   isSameRowOrColumn: boolean;
